@@ -5,6 +5,13 @@ import pyperclip
 
 count = 0
 
+# st.sidebar.title('Navigation')
+# if st.sidebar.button('Go to Page 2'):
+#     def display_page_2():
+#         st.title('Page 2')
+#         st.write('This is the content of Page 2')
+# if st.sidebar.button('Go to Page 2'):
+#     display_page_2()
 
 def copy_code_to_clipboard(code):
     pyperclip.copy(code)
@@ -58,12 +65,21 @@ def clean_html(clean):
     
     
     fifteen = re.sub('<h1>','<div class="cdcms_section2">\n<h1>', fourteen_20)
-    fifteen = re.sub('<h2>(.*?) Vs (.*?)</h2>','</div><div class="cdcms_comparison">\n<h2>\\1 Vs \\2', fifteen)
-    fifteen = re.sub('<h2>(.*?) VS (.*?)</h2>','</div><div class="cdcms_comparison">\n<h2>\\1 Vs \\2', fifteen)
-    fifteen = re.sub('<h2>(.*?) vs (.*?)</h2>','</div><div class="cdcms_comparison">\n<h2>\\1 vs \\2', fifteen)
+    fifteen = re.sub('<h2>(.*?) Vs (.*?)</h2>','</div><div class="cdcms_comparison">\n<h2>\\1 Vs \\2</h2>', fifteen)
+    fifteen = re.sub('<h2>(.*?) VS (.*?)</h2>','</div><div class="cdcms_comparison">\n<h2>\\1 Vs \\2</h2>', fifteen)
+    fifteen = re.sub('<h2>(.*?) vs (.*?)</h2>','</div><div class="cdcms_comparison">\n<h2>\\1 vs \\2</h2>', fifteen)
+    fifteen = fifteen.replace('<td> <p style="text-align: justify;">','<td>')
+    fifteen = fifteen.replace('</p> </td>','</td>')
+    fifteen = fifteen.replace('<td><p>','<td>')
+    fifteen = fifteen.replace('</p></td>','</td>')
+    fifteen = re.sub('<td>\n<p>','<td>',fifteen)
+    fifteen = re.sub('</p>\n</td>','</td>',fifteen)
     fifteen = re.sub('</div><div class="cdcms_section1">\n</div><div class="cdcms_section1">','</div><div class="cdcms_section1">\n',fifteen)
     fifteen = fifteen.replace('<div id="faq_id"> </div>','<div id="faq_id">')
-    return fifteen   
+
+    sixteen = re.sub('<td><p style="text-align: justify;">','<td>',fifteen)
+    sixteen = sixteen.replace('<td><p style="text-align: justify;">','<td>')
+    return sixteen   
 
 def increment_id(match):
     global count
@@ -137,6 +153,7 @@ def main():
                 var1= toc_create(soup)
                 var1 = str(var1)
                 var2 = str(soup)
+                # var2 = var2.replace('<')
                 var3 = "{}  {} ".format(var1, var2)
 
                 st.code(var3, language='html')
