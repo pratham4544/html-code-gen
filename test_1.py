@@ -130,7 +130,7 @@ def main():
                 var1 = str(var1)
                 var2 = str(soup)
                 var3 = "{}  {} ".format(var1, var2)
-                pyperclip.copy(var3)
+                # pyperclip.copy(var3)
                 # print(f'Copied Code Succesfully...\n\n\n')
                 # toc_create(soup)
                 # print(soup)
