@@ -2,7 +2,14 @@ import streamlit as st
 from bs4 import BeautifulSoup
 import re
 import pyperclip
+
 count = 0
+
+
+def copy_code_to_clipboard(code):
+    pyperclip.copy(code)
+    st.success("Code copied to clipboard!")
+
 def clean_html(clean):
 
     zero = re.sub('<td>\<p>(.*?)</p><p>(.*?)</p></td>','<th>\\1</<br />\\2</th>',clean)
@@ -51,10 +58,11 @@ def clean_html(clean):
     
     
     fifteen = re.sub('<h1>','<div class="cdcms_section2">\n<h1>', fourteen_20)
-    fifteen = re.sub('<h2>(.*?) Vs (.*?)</h2>','</div><div class="cdcms_comparison">\n<h2>\\1 Vs \\2', fourteen_20)
-    fifteen = re.sub('<h2>(.*?) VS (.*?)</h2>','</div><div class="cdcms_comparison">\n<h2>\\1 Vs \\2', fourteen_20)
-    fifteen = re.sub('<h2>(.*?) vs (.*?)</h2>','</div><div class="cdcms_comparison">\n<h2>\\1 vs \\2', fourteen_20)
+    fifteen = re.sub('<h2>(.*?) Vs (.*?)</h2>','</div><div class="cdcms_comparison">\n<h2>\\1 Vs \\2', fifteen)
+    fifteen = re.sub('<h2>(.*?) VS (.*?)</h2>','</div><div class="cdcms_comparison">\n<h2>\\1 Vs \\2', fifteen)
+    fifteen = re.sub('<h2>(.*?) vs (.*?)</h2>','</div><div class="cdcms_comparison">\n<h2>\\1 vs \\2', fifteen)
     fifteen = re.sub('</div><div class="cdcms_section1">\n</div><div class="cdcms_section1">','</div><div class="cdcms_section1">\n',fifteen)
+    fifteen = fifteen.replace('<div id="faq_id"> </div>','<div id="faq_id">')
     return fifteen   
 
 def increment_id(match):
@@ -124,17 +132,17 @@ def main():
                     a_tag['target'] = '_blank'
 
             if str(clean).find('collegedunia')>0:
-                print('collegedunia links are present')
+                st.write('collegedunia links are present')
             else:    
                 var1= toc_create(soup)
                 var1 = str(var1)
                 var2 = str(soup)
                 var3 = "{}  {} ".format(var1, var2)
-                # pyperclip.copy(var3)
-                # print(f'Copied Code Succesfully...\n\n\n')
-                # toc_create(soup)
-                # print(soup)
-                st.write('Copied Code Succesfully...\n\n\n',var3)
+
+                st.code(var3, language='html')
+
+                if st.button("Copy Code"):
+                    copy_code_to_clipboard(var3)
 
 if __name__ == "__main__":
     main()
