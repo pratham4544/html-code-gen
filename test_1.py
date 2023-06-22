@@ -79,6 +79,9 @@ def clean_html(clean):
 
     sixteen = re.sub('<td><p style="text-align: justify;">','<td>',fifteen)
     sixteen = sixteen.replace('<td><p style="text-align: justify;">','<td>')
+    sixteen = sixteen.replace('<td><strong>','<th>')
+    sixteen = sixteen.replace('</strong></th>','</th>')
+                              
     return sixteen   
 
 def increment_id(match):
