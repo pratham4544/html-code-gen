@@ -19,20 +19,37 @@ def copy_code_to_clipboard(code):
 
 def clean_html(clean):
     clean_code = clean.replace("<table>",'<table class="table table-striped style_table">')
-    
-    
-    one = clean_code.replace('<td>\n<p>','<td>')
-    two = one.replace('</p>\n</td>','</td>')
+
+
+    one = clean_code.replace('<td><p>','<td>')
+    two = one.replace('</p></td>','</td>')
     three  = two.replace('\n','')
     four = three.replace('<li>','<li style="text-align: justify;">')
     five = four.replace('<p>','<p style="text-align: justify;">')
     six = five.replace('<td><strong>','<th>')
     seven = six.replace('</strong></td>','</th>')
-    
+
     eight = seven.replace('<td><strong>','<th>')
     nine = eight.replace('</strong></td>','</th>')
-    
-    return nine   
+    nine = nine.replace('<td> <p style="text-align: justify;">','<td>')
+    nine = nine.replace('</p> </td>','</td>')
+    nine = nine.replace('<td><strong>','<th>')
+    nine = nine.replace('</strong></td>','</th>')
+
+     ### code for collegedunia news articles
+    nine = nine.replace('<p style="text-align: justify;"><strong>Check: </strong>','<p><span style="color: #ff0000;"><strong>Check: </strong></span>')
+    nine = nine.replace('<p style="text-align: justify;"><strong>Check:</strong>','<p><span style="color: #ff0000;"><strong>Check: </strong></span>')
+
+    nine = re.sub('''<p style=text-align: justify;"><strong>Check IELTS writing (.*?) samples:</strong></p>''','''<p><span style="color: #ff0000;"><strong>Check IELTS writing \\1 samples:</strong></span></p>''',nine)
+    nine = nine.replace('<p style="text-align: justify;"><strong>Explanation</strong>: ','<p><span style="color: #ff0000;"><strong>Explanation</strong>:</span> ')
+    nine = nine.replace('<p style="text-align: justify;"><strong>Supporting statement</strong>: ','<p><span style="color: #ff0000;"><strong>Supporting statement</strong>:</span>')
+    nine = nine.replace('<p style="text-align: justify;"><strong>Answer</strong>:','<p><span style="color: #ff0000;"><strong>Answer</strong>:</span>')
+    nine = nine.replace('<p style="text-align: justify;"><strong>Keywords</strong>: ','<p><span style="color: #ff0000;"><strong>Keywords</strong>:</span> ')
+    nine = nine.replace('</h3>','</h3><div style="max-height: 85vh; overflow-y: auto; margin-bottom: 20px;">')
+    nine = nine.replace('<p style="text-align: justify;"><strong>Keyword location</strong>: ','<p><span style="color: #ff0000;"><strong>Keyword location</strong>:</span> ')
+    # <p style="text-align: justify;"><strong>Check IELTS writing samples:</strong></p>
+
+    return nine
 
 def increment_id(match):
     global count
@@ -67,9 +84,9 @@ def main():
                 if not a_tag.has_attr('target'):
                     a_tag['target'] = '_blank'
 
-            if str(soup).find('collegedunia')>0:
-                st.write('collegedunia links are present')
-            else:    
+            # if str(soup).find('collegedunia')>0:
+            #     st.write('collegedunia links are present')
+            # else:
                 # var1= toc_create(soup)
                 # var1 = str(var1)
                 var2 = str(soup)
